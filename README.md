@@ -74,7 +74,10 @@ MIT — free to fork, reuse, and adapt for other counties. Attribution appreciat
 
 ## Credits
 
-Built by [Rosario Palacios](https://palacioscontigo.community) / **Palacios Contigo** to support Georgia voters.
-Election protection work in coordination with [Common Cause Georgia](https://www.commoncause.org/georgia/) and the broader voter protection coalition.
+Built by Rosario Palacios for **[Common Cause Georgia](https://www.commoncause.org/georgia/)** to support Georgia voters.
+
+Contact: [mdrpalacios@commoncause.org](mailto:mdrpalacios@commoncause.org)
+
+Election protection work in coordination with the broader Georgia voter protection coalition.
 
 For other Georgia counties, fork this repo and swap in your county's PDF — the structure is reusable.
