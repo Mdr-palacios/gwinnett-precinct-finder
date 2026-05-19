@@ -13,6 +13,8 @@ An interactive map and searchable directory of all **156 Election Day polling lo
 - 📍 **"Use my location"** sorts polling places by distance and highlights the closest
 - 🏙️ **City filter** — narrow to Lawrenceville, Snellville, Lilburn, Duluth, etc.
 - 🧭 **One-click directions** in Google Maps or Apple Maps
+- 📱 **Text/Email me this address** — opens the phone's Messages app (mobile) or email client (desktop) pre-filled with the polling location, address, and a shareable link. Voters can text it to themselves or a friend. No backend, no SMS fees, no signup.
+- 📋 **Copy address** button — one-tap copy to clipboard for pasting anywhere
 - 🔗 **Deep linking** — share `?precinct=017` to auto-open a specific precinct
 - 📱 **Mobile-responsive** for voters checking on phones
 - ♿ Accessible markup, semantic HTML, keyboard navigation

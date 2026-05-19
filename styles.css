@@ -205,6 +205,22 @@ a:hover { color: var(--gold); }
 }
 .popup-actions a:hover { background: var(--gold); color: var(--navy); }
 
+.popup-copy { margin-top: 8px; }
+.copy-btn {
+  font-family: Georgia, serif;
+  background: var(--white);
+  color: var(--navy);
+  border: 2px solid var(--navy);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.82rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.copy-btn:hover { background: var(--light-blue); }
+.copy-btn.copied { background: var(--gold); border-color: var(--gold); }
+
 /* Legend / footer */
 .legend {
   background: var(--white);

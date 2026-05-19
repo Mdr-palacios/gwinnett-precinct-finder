@@ -51,6 +51,22 @@
     map.addLayer(cluster);
   }
 
+  function isMobile() {
+    return /Android|iPhone|iPad|iPod|Mobile|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  function buildShareMessage(p) {
+    const url = `${location.origin}${location.pathname}?precinct=${encodeURIComponent(p.precinct)}`;
+    return (
+      `My Gwinnett County Election Day polling place:\n\n` +
+      `Precinct ${p.precinct} \u2013 ${p.name}\n` +
+      `${p.location}\n` +
+      `${p.address}\n${p.city}, ${p.state} ${p.zip}\n\n` +
+      `Polls open 7am\u20137pm on Election Day.\n` +
+      `Directions & map: ${url}`
+    );
+  }
+
   function buildPopupHtml(p) {
     const gmaps = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
       p.full_address
@@ -58,14 +74,27 @@
     const apple = `https://maps.apple.com/?daddr=${encodeURIComponent(
       p.full_address
     )}`;
+    const msg = buildShareMessage(p);
+    const subject = `My Gwinnett polling place \u2013 Precinct ${p.precinct}`;
+    // sms: URI; the comma after the empty number is the iOS/Android convention so body works without a recipient
+    const smsHref = `sms:?&body=${encodeURIComponent(msg)}`;
+    const smsHrefIos = `sms:&body=${encodeURIComponent(msg)}`;
+    const mailHref = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(msg)}`;
+    const sendBtn = isMobile()
+      ? `<a href="${smsHref}" data-ios-href="${smsHrefIos}" class="sms-link">\uD83D\uDCF1 Text me this address</a>`
+      : `<a href="${mailHref}">\u2709\uFE0F Email me this address</a>`;
     return `
       <div>
         <p class="popup-title">${escapeHtml(p.location)}</p>
         <div class="popup-meta">Precinct ${escapeHtml(p.precinct)} &middot; ${escapeHtml(p.name)}</div>
         <div>${escapeHtml(p.address)}<br>${escapeHtml(p.city)}, ${escapeHtml(p.state)} ${escapeHtml(p.zip)}</div>
         <div class="popup-actions">
-          <a href="${gmaps}" target="_blank" rel="noopener">Google Directions</a>
+          <a href="${gmaps}" target="_blank" rel="noopener">Directions</a>
           <a href="${apple}" target="_blank" rel="noopener">Apple Maps</a>
+          ${sendBtn}
+        </div>
+        <div class="popup-copy">
+          <button type="button" class="copy-btn" data-copy="${escapeHtml(msg)}">Copy address</button>
         </div>
       </div>`;
   }
@@ -82,9 +111,46 @@
       const m = L.marker([p.lat, p.lon], { icon: pinIcon });
       m.bindPopup(buildPopupHtml(p));
       m.on("click", () => setActive(p.precinct, false));
+      m.on("popupopen", wirePopupActions);
       markers[p.precinct] = m;
       cluster.addLayer(m);
     });
+  }
+
+  function wirePopupActions(e) {
+    const root = e.popup.getElement();
+    if (!root) return;
+
+    // iOS uses sms:&body=, Android uses sms:?&body= \u2014 swap when needed
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isIOS) {
+      root.querySelectorAll("a.sms-link").forEach((a) => {
+        const alt = a.getAttribute("data-ios-href");
+        if (alt) a.setAttribute("href", alt);
+      });
+    }
+
+    // Copy button
+    const btn = root.querySelector(".copy-btn");
+    if (btn) {
+      btn.addEventListener("click", async () => {
+        const text = btn.getAttribute("data-copy") || "";
+        try {
+          await navigator.clipboard.writeText(text);
+          const orig = btn.textContent;
+          btn.textContent = "Copied \u2713";
+          btn.classList.add("copied");
+          setTimeout(() => { btn.textContent = orig; btn.classList.remove("copied"); }, 1800);
+        } catch (err) {
+          // Fallback for browsers without clipboard API
+          const ta = document.createElement("textarea");
+          ta.value = text; document.body.appendChild(ta); ta.select();
+          try { document.execCommand("copy"); btn.textContent = "Copied \u2713"; }
+          catch (_) { alert("Copy failed \u2014 long-press the address to copy manually."); }
+          document.body.removeChild(ta);
+        }
+      });
+    }
   }
 
   function renderList(items) {
