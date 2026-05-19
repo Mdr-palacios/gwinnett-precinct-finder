@@ -2,7 +2,7 @@
 
 An interactive map and searchable directory of all **156 Election Day polling locations** in Gwinnett County, Georgia. Built for voters to quickly look up their assigned precinct, see it on a map, and get turn-by-turn directions.
 
-🔗 **Live site:** https://palacioscontigo.github.io/gwinnett-precinct-finder/
+🔗 **Live site:** https://mdr-palacios.github.io/gwinnett-precinct-finder/
 
 ![Gwinnett Precinct Finder](https://img.shields.io/badge/Precincts-156-c9a227?style=flat-square) ![Status](https://img.shields.io/badge/Status-Live-0b2545?style=flat-square)
 
@@ -39,7 +39,7 @@ Addresses are geocoded with the U.S. Census Bureau geocoder (with OpenStreetMap 
 No build step. It's plain HTML, CSS, and vanilla JavaScript.
 
 ```bash
-git clone https://github.com/PalaciosContigo/gwinnett-precinct-finder.git
+git clone https://github.com/Mdr-palacios/gwinnett-precinct-finder.git
 cd gwinnett-precinct-finder
 python3 -m http.server 8000
 # open http://localhost:8000

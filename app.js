@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  const REPO_URL = "https://github.com/PalaciosContigo/gwinnett-precinct-finder";
+  const REPO_URL = "https://github.com/Mdr-palacios/gwinnett-precinct-finder";
   document.getElementById("repo-link").href = REPO_URL;
 
   // State
